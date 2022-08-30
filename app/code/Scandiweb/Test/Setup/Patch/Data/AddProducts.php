@@ -90,17 +90,16 @@ class AddProducts implements DataPatchInterface
      * @param CategoryCollectionFactory $categoryCollectionFactory
      */
     public function __construct(
-        ProductInterfaceFactory         $productInterfaceFactory,
-        ProductRepositoryInterface      $productRepository,
-        State                           $appState,
-        StoreManagerInterface           $storeManager,
-        SourceItemInterfaceFactory      $sourceItemFactory,
-        SourceItemsSaveInterface        $sourceItemsSaveInterface,
+        ProductInterfaceFactory $productInterfaceFactory,
+        ProductRepositoryInterface $productRepository,
+        State $appState,
+        StoreManagerInterface $storeManager,
+        SourceItemInterfaceFactory $sourceItemFactory,
+        SourceItemsSaveInterface $sourceItemsSaveInterface,
         CategoryLinkManagementInterface $categoryLink,
-        EavSetup                        $eavSetup,
-        CategoryCollectionFactory       $categoryCollectionFactory
-    )
-    {
+        EavSetup $eavSetup,
+        CategoryCollectionFactory $categoryCollectionFactory
+    ) {
         $this->appState = $appState;
         $this->productInterfaceFactory = $productInterfaceFactory;
         $this->productRepository = $productRepository;
@@ -147,16 +146,25 @@ class AddProducts implements DataPatchInterface
             ->setVisibility(Visibility::VISIBILITY_BOTH)
             ->setStatus(Status::STATUS_ENABLED);
 
+        $this->productRepository->save($product);
+
+        $sourceItem = $this->sourceItemFactory->create();
+        $sourceItem->setSourceCode('default');
+        $sourceItem->setQuantity(200);
+        $sourceItem->setSku($product->getSku());
+        $sourceItem->setStatus(SourceItemInterface::STATUS_IN_STOCK);
+        $this->sourceItems[] = $sourceItem;
+        $this->sourceItemsSaveInterface->execute($this->sourceItems);
+
         $categoryIds = $this->categoryCollectionFactory->create()
             ->addAttributeToFilter('name', ['=' => "Man"])
             ->getAllIds();
-        $this->productRepository->save($product);
 
         $this->categoryLink->assignProductToCategories($product->getSku(), $categoryIds);
     }
 
     /**
-     * {@inheritDoc}
+     * @return array|string[]
      */
     public static function getDependencies(): array
     {
@@ -164,7 +172,7 @@ class AddProducts implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return array|string[]
      */
     public function getAliases(): array
     {
