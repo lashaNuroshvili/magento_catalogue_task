@@ -64,17 +64,17 @@ class AddProducts implements DataPatchInterface
     /**
      * @var CategoryLinkManagementInterface
      */
-    private CategoryLinkManagementInterface $categoryLink;
+    protected CategoryLinkManagementInterface $categoryLink;
 
     /**
      * @var CategoryCollectionFactory
      */
-    private CategoryCollectionFactory $categoryCollectionFactory;
+    protected CategoryCollectionFactory $categoryCollectionFactory;
 
     /**
      * @var EavSetup
      */
-    private EavSetup $eavSetup;
+    protected EavSetup $eavSetup;
 
     /**
      * Migration patch constructor.

@@ -65,6 +65,7 @@ atlassian*
 /pub/static/*
 !/pub/static/.htaccess
 
+/auth.json
 /var/*
 !/var/.htaccess
 /vendor/*
