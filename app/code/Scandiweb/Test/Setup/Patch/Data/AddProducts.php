@@ -113,6 +113,7 @@ class AddProducts implements DataPatchInterface
 
     /**
      * Add new product
+     * @return void
      * @throws Exception
      */
     public function apply(): void
@@ -126,8 +127,9 @@ class AddProducts implements DataPatchInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
      * @throws ValidationException
+     * @return void
      */
-    public function execute()
+    public function execute(): void
     {
         $product = $this->productInterfaceFactory->create();
 
